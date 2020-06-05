@@ -214,6 +214,22 @@ if __name__ == "__main__":
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
+    print "*******arguments********"
+    print "train_file", train_file
+    print "test_file", test_file
+    print "NUM_DIM", NUM_DIM
+    print "MAX_DEPTH", MAX_DEPTH
+    print "LAMBDA_U", LAMBDA_U
+    print "LAMBDA_BPR", LAMBDA_BPR
+    print "NUM_BPRPAIRS", NUM_BPRPAIRS
+    print "BATCH_SIZE", BATCH_SIZE
+    print "NUM_ITER_U", NUM_ITER_U
+    print "NUM_ITER_V", NUM_ITER_V
+    print "learning rate", lr
+    print "random_seed", random_seed
+    print "NUM_RUN", NUM_RUN
+    print "save_dir", save_dir
+
     print "********** Load training data **********"
     rating_matrix, user_opinion, item_opinion = getRatingMatrix(train_file)
 
