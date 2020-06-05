@@ -43,15 +43,15 @@ def getRatingMatrix(filename):
         num_neg = 0
         for j in range(0, len(data_fo[i]), 2):
             # for user, count the frequency
-            if np.isnan(user_opinion[user_id][data_fo[i, j]]):
-                user_opinion[user_id][data_fo[i, j]] = 1
+            if np.isnan(user_opinion[user_id][data_fo[i][j]]):
+                user_opinion[user_id][data_fo[i][j]] = 1
             else:
-                user_opinion[user_id][data_fo[i, j]] += 1
+                user_opinion[user_id][data_fo[i][j]] += 1
             # for item, count the sentiment score
-            if np.isnan(item_opinion[item_id][data_fo[i, j]]):
-                item_opinion[item_id][data_fo[i, j]] = data_fo[i, j+1]
+            if np.isnan(item_opinion[item_id][data_fo[i][j]]):
+                item_opinion[item_id][data_fo[i][j]] = data_fo[i][j+1]
             else:
-                item_opinion[item_id][data_fo[i, j]] += data_fo[i, j+1]
+                item_opinion[item_id][data_fo[i][j]] += data_fo[i][j+1]
 
     return rating_matrix, user_opinion, item_opinion
 
