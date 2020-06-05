@@ -69,6 +69,15 @@ def ndcg_k(r, k):
     return dcg_k(r, k) / idcg
 
 def get_ndcg(prediction, rating_matrix, k):
+    print('Shape:')
+    print(prediction.shape)
+    print(rating_matrix.shape)
+    while prediction.shape[0] > rating_matrix.shape[0]:
+        prediction = np.delete(prediction, prediction.shape[0]-1, 0)
+    while prediction.shape[1] > rating_matrix.shape[1]:
+        prediction = np.delete(prediction, prediction.shape[1]-1, 1)
+    print(prediction.shape)
+    print(rating_matrix.shape)
 
     num_user, num_item = rating_matrix.shape
     ndcg_overall = []
