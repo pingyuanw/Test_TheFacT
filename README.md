@@ -1,3 +1,5 @@
+### Original Repo: https://github.com/dongji1111/TheFacT
+
 # The FacT
 
 This is an implementation for the paper titled "The FacT: Taming Latent Factor Models for Explainability with Factorization Trees" published at SIGIR 2019. 
