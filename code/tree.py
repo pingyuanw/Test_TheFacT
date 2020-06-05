@@ -188,6 +188,14 @@ class Tree:
         self.print_tree(current_node.right, level + 1)
         self.print_tree(current_node.empty, level + 1)
 
+    def better_print_tree(self, current_node, level=0):
+        if current_node == None:
+            return
+        print '  ' * level + '|- ' + str(current_node.feature_index) + '?' + str(current_node.predicate)
+        self.better_print_tree(current_node.left, level + 1)
+        self.better_print_tree(current_node.right, level + 1)
+        self.better_print_tree(current_node.empty, level + 1)
+
     def get_vectors(self):
         vectors = np.zeros((self.num_target, self.num_dim))
         for i in range(self.num_target):
