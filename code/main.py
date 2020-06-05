@@ -26,7 +26,6 @@ def getRatingMatrix(filename):
     num_users = data[:, 0].max() + 1
     num_items = data[:, 1].max() + 1
     num_features = max(feature) + 1
-    print num_features
     
     # create rating matrix, and user_opinion, item_opinion matrices
     # user_opinion: user preference for each feature
@@ -118,7 +117,7 @@ def MatrixFactorization(num_dim, lr, lambda_u, lambda_v, num_iters, rating_matri
     return user_vector, item_vector
 
 def AlternativeOptimization(rating_matrix, user_opinion, item_opinion, num_dim, max_depth, num_BPRpairs, lr, lambda_u, lambda_v,
-                            lambda_BPR, num_run, num_iter_user, num_iter_item, batch_size, random_seed):
+                            lambda_BPR, num_run, num_iter_user, num_iter_item, batch_size, random_seed, save_dir):
     num_users, num_items = rating_matrix.shape
     num_features = user_opinion.shape[1]
     print "Number of users", num_users 
@@ -129,6 +128,11 @@ def AlternativeOptimization(rating_matrix, user_opinion, item_opinion, num_dim, 
 
     user_vector, item_vector = MatrixFactorization(num_dim, lr, lambda_u, lambda_v, 50, rating_matrix)
     pred = np.dot(user_vector, item_vector.T)
+
+    # save model for matrix factorization
+    np.save(save_dir + "mf_item_vector", item_vector)
+    np.save(save_dir + "mf_user_vector", user_vector)
+    np.save(save_dir + "mf_pred_rating", pred)
 
     i = 0
     while i < num_run:
@@ -163,14 +167,19 @@ def AlternativeOptimization(rating_matrix, user_opinion, item_opinion, num_dim, 
         if error < 0.1:
             break
         i = i + 1
+        np.save(save_dir + "item_tree", [item_tree])
+        np.save(save_dir + "user_tree", [user_tree])
+        np.save(save_dir + "item_vector", item_vector)
+        np.save(save_dir + "user_vector", user_vector)
+        np.save(save_dir + "pred_rating", pred)
     return user_tree, item_tree, user_vector, item_vector
 
-
 if __name__ == "__main__":
+
     # initialization
     parser = argparse.ArgumentParser()
-    parser.add_argument("--train_file", help="training filename", default="../data/yelp_train.txt")
-    parser.add_argument("--test_file", help="test filename", default="../data/yelp_test.txt")
+    parser.add_argument("--train_file", help="training filename", default="../data/test_train.txt")
+    parser.add_argument("--test_file", help="test filename", default="../data/test_test.txt")
     parser.add_argument("--num_dim", help="the number of latent dimension", default=20)
     parser.add_argument("--max_depth", help="the maximum depth of the tree", default=6)
     parser.add_argument("--lambda_u", help="regularization parameter for user vectors", default=1)
@@ -183,6 +192,7 @@ if __name__ == "__main__":
     parser.add_argument("--learning_rate", help="learning rate for sgd", default=0.05)
     parser.add_argument("--random_seed", help="random seed for initialization and BPR calculation", default=0)
     parser.add_argument("--num_run", help="number of iterations for alternatively creating the trees", default=5)
+    parser.add_argument("--save_dir", help="save result to dir", default="../results/")
 
     args = parser.parse_args()
     train_file = args.train_file
@@ -199,8 +209,17 @@ if __name__ == "__main__":
     lr = float(args.learning_rate)
     random_seed = int(args.random_seed)
     NUM_RUN = int(args.num_run)
+
+    save_dir = args.save_dir
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+
     print "********** Load training data **********"
     rating_matrix, user_opinion, item_opinion = getRatingMatrix(train_file)
+
+    
+    np.save(save_dir + "user_opinion", user_opinion)
+    np.save(save_dir + "item_opinion", item_opinion)
 
     # build the factorization tree with the training dataset
     user_tree, item_tree, user_vector, item_vector = AlternativeOptimization(rating_matrix=rating_matrix,
@@ -210,14 +229,9 @@ if __name__ == "__main__":
                                                                            lambda_u=LAMBDA_U, lambda_v=LAMBDA_V,
                                                                            lambda_BPR=LAMBDA_BPR, num_run=NUM_RUN,
                                                                            num_iter_user=NUM_ITER_U, num_iter_item=NUM_ITER_V,
-                                                                           batch_size=BATCH_SIZE, random_seed=random_seed)
+                                                                           batch_size=BATCH_SIZE, random_seed=random_seed,
+                                                                           save_dir=save_dir)
     pred_rating = np.dot(user_vector, item_vector.T)
-    # save the results
-    if not os.path.exists("../results/"):
-        os.makedirs(directory)
-    np.savetxt("../results/item_vector.txt", item_vector, fmt='%0.8f')
-    np.savetxt("../results/user_vector.txt", user_vector, fmt="%0.8f")
-    np.savetxt("../results/pred_rating.txt", pred_rating, fmt="%0.8f")
 
     # test on test data with the trained model
     print "********** Load test data **********"
@@ -227,10 +241,6 @@ if __name__ == "__main__":
     print "Number of features", user_opinion.shape[1]
 
     # get the NDCG results
-    print "********** User tree **********"
-    user_tree.print_tree(user_tree.root)
-    print "********** Item tree **********" 
-    item_tree.print_tree(item_tree.root)
     print "********** NDCG **********"
     ndcg_10 = get_ndcg(pred_rating, test_rating, 10)
     print "NDCG@10: ", ndcg_10
