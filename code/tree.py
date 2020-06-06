@@ -229,7 +229,7 @@ class Tree:
                 if np.isnan(predicate[feature_index][predicate_index]):
                     continue
                 else:
-                    print feature_index, predicate[feature_index][predicate_index]
+                    # print feature_index, predicate[feature_index][predicate_index]
                     index_left, index_right, index_empty = self.split(opinion_matrix, feature_index, predicate[feature_index][predicate_index])
                     split_value[feature_index][predicate_index] = self.calculate_splitvalue(rating_matrix, current_node.vector, index_left, index_right, index_empty)
 
