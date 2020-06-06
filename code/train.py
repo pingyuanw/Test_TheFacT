@@ -82,7 +82,7 @@ if __name__ == "__main__":
             break
         i = i + 1
         if i%save_rate == 0:
-            np.save(path + "item_tree" + str(i), [item_tree])
-            np.save(path + "user_tree" + str(i), [user_tree])
+            np.save(path + "item_tree", [item_tree])
+            np.save(path + "user_tree", [user_tree])
             np.save(path + "item_vector" + str(i), item_vector)
             np.save(path + "user_vector" + str(i), user_vector)
