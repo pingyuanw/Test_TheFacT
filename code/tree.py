@@ -248,7 +248,7 @@ class Tree:
         # get all the predicate
         for feature_index in range(self.num_feature):
             predicate_list = self.get_predicate(opinion_matrix, feature_index)
-            predicate[feature_index] = predicate_list
+            predicate[feature_index][:len(predicate_list)] = predicate_list
 
         # prepare the parameters for parallel computing
         params = {}
@@ -261,7 +261,7 @@ class Tree:
                 else:
                     params[feature_index][predicate_index] = []
                     index_left, index_right, index_empty = self.split(opinion_matrix, feature_index, predicate[feature_index][predicate_index])
-                    params[feature_index][predicate_index].extend(rating_matrix, current_node,vector, index_left, index_right, index_empty)
+                    params[feature_index][predicate_index].extend((rating_matrix, current_node.vector, index_left, index_right, index_empty))
                     c += 1
         #### set up multiprocessing
         pool = mp.Pool()
@@ -299,13 +299,15 @@ class Tree:
 
         error_old = self.calculate_loss(current_node, rating_matrix)
 
-        min_split_value, best_feature, best_predicate = self.get_best_predicate(current_node, opinion_matrix, rating_matrix)
+        # min_split_value, best_feature, best_predicate = self.get_best_predicate(current_node, opinion_matrix, rating_matrix)
+        
+        ### you can also use the parallel version
+        min_split_value, best_feature, best_predicate = self.get_best_predicate_parallel(current_node, opinion_matrix, rating_matrix)
+
         print min_split_value, best_feature, best_predicate
         current_node.feature_index = best_feature
         current_node.predicate = best_predicate
-        ### you can also use the parallel version
-        # best_feature, best_predicate = self.get_best_predicate_parallel(current_node, opinion_matrix, rating_matrix)
-
+        
         index_left, index_right, index_empty = self.split(opinion_matrix, best_feature, best_predicate)
         left_rating_matrix, left_opinion_matrix = rating_matrix[index_left], opinion_matrix[index_left]
         right_rating_matrix, right_opinion_matrix = rating_matrix[index_right], opinion_matrix[index_right]
