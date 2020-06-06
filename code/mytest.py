@@ -50,19 +50,19 @@ if __name__ == "__main__":
     test_file = args.test_file
 
 
-    mf_item_vector = np.load(PATH + 'mf_item_vector.npy')
-    mf_user_vector = np.load(PATH + 'mf_user_vector.npy')
-    mf_pred_rating = np.load(PATH + 'mf_pred_rating.npy')
+    mf_item_vector = np.load(PATH + '/mf_item_vector.npy')
+    mf_user_vector = np.load(PATH + '/mf_user_vector.npy')
+    mf_pred_rating = np.load(PATH + '/mf_pred_rating.npy')
 
-    item_vector = np.load(PATH + 'item_vector.npy')
-    user_vector = np.load(PATH + 'user_vector.npy')
-    pred_rating = np.load(PATH + 'pred_rating.npy')
+    item_vector = np.load(PATH + '/item_vector.npy')
+    user_vector = np.load(PATH + '/user_vector.npy')
+    pred_rating = np.load(PATH + '/pred_rating.npy')
     # pred_rating = np.dot(user_vector, item_vector.T)
 
-    user_opinion = np.load(PATH + 'user_opinion.npy')
-    item_opinion = np.load(PATH + 'item_opinion.npy')
-    user_tree = np.load(PATH + 'user_tree.npy', allow_pickle=True)[0]
-    item_tree = np.load(PATH + 'item_tree.npy', allow_pickle=True)[0]
+    user_opinion = np.load(PATH + '/user_opinion.npy')
+    item_opinion = np.load(PATH + '/item_opinion.npy')
+    user_tree = np.load(PATH + '/user_tree.npy', allow_pickle=True)[0]
+    item_tree = np.load(PATH + '/item_tree.npy', allow_pickle=True)[0]
     
     print('### user_tree:')
     user_tree.better_print_tree(user_tree.root)
