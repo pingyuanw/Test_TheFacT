@@ -24,13 +24,13 @@ def explain(user_tree, item_tree, user_opinion, item_opinion, user_id, item_id):
     user_only = np.setdiff1d(user_features, shared_features)
     item_only = np.setdiff1d(item_features, shared_features)
 
-    print 'We recommend item ', item_id, 'for user ', user_id, ' because:'
+    print ' We recommend item ', item_id, 'for user ', user_id, ' because:'
     for feature in shared_features:
-        print 'user like the feature ', feature, ' in the item'
+        print '     user like the feature ', feature, ' in the item'
     for feature in user_only:
-        print 'user like the feature ', feature
+        print '     user like the feature ', feature
     for feature in item_only:
-        print 'item has the feature ', feature
+        print '     item has the feature ', feature
 
 def recommend_for(pred_rating, user_tree, item_tree, user_opinion, item_opinion, user_id, k=5):
     result = np.argsort(-pred_rating[user_id])[0:k]
@@ -68,7 +68,6 @@ if __name__ == "__main__":
     user_tree.better_print_tree(user_tree.root)
     print('### item_tree:')
     item_tree.better_print_tree(item_tree.root)
-    recommend_for(pred_rating, user_tree, item_tree, user_opinion, item_opinion, 5)
 
 
     # test on test data with the trained model
@@ -94,5 +93,10 @@ if __name__ == "__main__":
     print "NDCG@20: ", ndcg_20
     ndcg_50 = get_ndcg(pred_rating, test_rating, 50)
     print "NDCG@50: ", ndcg_50
+
+    while True:
+        user_id = int(raw_input("Enter user id : "))
+        recommend_for(pred_rating, user_tree, item_tree, user_opinion, item_opinion, user_id)
+
 
 # explain(0, 0)

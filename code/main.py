@@ -57,6 +57,7 @@ def getRatingMatrix(filename):
 def dcg_k(r, k):
     r = np.asfarray(r)[:k]
     if r.size != k:
+        return 0
         raise ValueError('ranking list length < k')
     return np.sum(r / np.log2(np.arange(2, r.size + 2)))
 
@@ -69,14 +70,14 @@ def ndcg_k(r, k):
 
 def get_ndcg(prediction, rating_matrix, k):
     print('Shape:')
-    print(prediction.shape)
-    print(rating_matrix.shape)
+    # print(prediction.shape)
+    # print(rating_matrix.shape)
     while prediction.shape[0] > rating_matrix.shape[0]:
         prediction = np.delete(prediction, prediction.shape[0]-1, 0)
     while prediction.shape[1] > rating_matrix.shape[1]:
         prediction = np.delete(prediction, prediction.shape[1]-1, 1)
-    print(prediction.shape)
-    print(rating_matrix.shape)
+    # print(prediction.shape)
+    # print(rating_matrix.shape)
 
     num_user, num_item = rating_matrix.shape
     ndcg_overall = []
