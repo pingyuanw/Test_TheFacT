@@ -43,31 +43,33 @@ if __name__ == "__main__":
     # initialization
     parser = argparse.ArgumentParser()
     parser.add_argument("--path", help="result path", default="../results/")
-    parser.add_argument("--test_file", help="result path", default="../data/test_test.txt")
+    parser.add_argument("--version", help="model version", default="")
+    parser.add_argument("--test_file", help="test file", default="../data/test_test.txt")
+    parser.add_argument("--train_file", help="train file", default="../data/test_train.txt")
 
     args = parser.parse_args()
     PATH = args.path
     test_file = args.test_file
+    train_file = args.train_file
+    version = args.version
 
 
     mf_item_vector = np.load(PATH + '/mf_item_vector.npy')
     mf_user_vector = np.load(PATH + '/mf_user_vector.npy')
     mf_pred_rating = np.load(PATH + '/mf_pred_rating.npy')
 
-    item_vector = np.load(PATH + '/item_vector.npy')
-    user_vector = np.load(PATH + '/user_vector.npy')
-    pred_rating = np.load(PATH + '/pred_rating.npy')
-    # pred_rating = np.dot(user_vector, item_vector.T)
+    item_vector = np.load(PATH + '/item_vector' + version + '.npy')
+    user_vector = np.load(PATH + '/user_vector' + version + '.npy')
+    pred_rating = np.dot(user_vector, item_vector.T)
 
-    user_opinion = np.load(PATH + '/user_opinion.npy')
-    item_opinion = np.load(PATH + '/item_opinion.npy')
+    rating_matrix, user_opinion, item_opinion = getRatingMatrix(train_file)
+
     user_tree = np.load(PATH + '/user_tree.npy', allow_pickle=True)[0]
     item_tree = np.load(PATH + '/item_tree.npy', allow_pickle=True)[0]
-    
-    print('### user_tree:')
-    user_tree.better_print_tree(user_tree.root)
-    print('### item_tree:')
-    item_tree.better_print_tree(item_tree.root)
+    # print('### user_tree:')
+    # user_tree.better_print_tree(user_tree.root)
+    # print('### item_tree:')
+    # item_tree.better_print_tree(item_tree.root)
 
 
     # test on test data with the trained model
@@ -78,13 +80,13 @@ if __name__ == "__main__":
     print "Number of features", user_opinion_test.shape[1]
 
     # get the NDCG results
-    print "********** NDCG only with mf**********"
-    ndcg_10 = get_ndcg(mf_pred_rating, test_rating, 10)
-    print "NDCG@10: ", ndcg_10
-    ndcg_20 = get_ndcg(mf_pred_rating, test_rating, 20)
-    print "NDCG@20: ", ndcg_20
-    ndcg_50 = get_ndcg(mf_pred_rating, test_rating, 50)
-    print "NDCG@50: ", ndcg_50
+    # print "********** NDCG only with mf**********"
+    # ndcg_10 = get_ndcg(mf_pred_rating, test_rating, 10)
+    # print "NDCG@10: ", ndcg_10
+    # ndcg_20 = get_ndcg(mf_pred_rating, test_rating, 20)
+    # print "NDCG@20: ", ndcg_20
+    # ndcg_50 = get_ndcg(mf_pred_rating, test_rating, 50)
+    # print "NDCG@50: ", ndcg_50
 
     print "********** NDCG **********"
     ndcg_10 = get_ndcg(pred_rating, test_rating, 10)
