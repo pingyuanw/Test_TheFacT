@@ -76,15 +76,17 @@ if __name__ == "__main__":
         # add the refinement to the leave nodes of item tree as personalized representation
         item_vector = item_tree.personalization(item_vector)
 
-        pred = np.dot(user_vector, item_vector.T)
-        error = LA.norm(pred_old - pred) ** 2
-        print ">>>>>Error: ", error
-        if error < 0.1:
-            print "!!!!!!CHANGE learning rate now!!!!!!"
-            break
+        
         i = i + 1
         if i%save_rate == 0:
             np.save(path + "item_tree", [item_tree])
             np.save(path + "user_tree", [user_tree])
             np.save(path + "item_vector" + str(i), item_vector)
             np.save(path + "user_vector" + str(i), user_vector)
+            
+        pred = np.dot(user_vector, item_vector.T)
+        error = LA.norm(pred_old - pred) ** 2
+        print ">>>>>Error: ", error
+        if error < 0.1:
+            print "!!!!!!CHANGE learning rate now!!!!!!"
+            break
