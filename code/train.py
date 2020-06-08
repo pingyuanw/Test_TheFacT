@@ -11,12 +11,13 @@ if __name__ == "__main__":
     parser.add_argument("--start", help="start epoch", default="")
     parser.add_argument("--num_run", help="number of iterations for alternatively creating the trees", default=5)
     parser.add_argument("--save_rate", help="frequency to save model", default=5)
+    parser.add_argument("--learning_rate", help="learning rate", default=0.05)
     
     args = parser.parse_args()  
     num_dim = 20
     max_depth = 6
     num_BPRpairs = 20
-    lr = 0.05
+    lr = args.learning_rate
     lambda_u = 1
     lambda_v = 1
     lambda_BPR = 100
@@ -38,7 +39,8 @@ if __name__ == "__main__":
     print "Number of items", num_items
     print "Number of features", num_features
     print "Number of latent dimensions: ", num_dim
-    print "Maximum depth of the regression tree: ", max_depth    
+    print "Maximum depth of the regression tree: ", max_depth  
+    print "learning rate: ", lr  
 
     item_vector = np.load(path + 'item_vector' + start + '.npy')
     user_vector = np.load(path + 'user_vector' + start + '.npy')
