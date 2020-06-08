@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     mf_item_vector = np.load(PATH + '/mf_item_vector.npy')
     mf_user_vector = np.load(PATH + '/mf_user_vector.npy')
-    mf_pred_rating = np.load(PATH + '/mf_pred_rating.npy')
+    # mf_pred_rating = np.load(PATH + '/mf_pred_rating.npy')
 
     item_vector = np.load(PATH + '/item_vector' + version + '.npy')
     user_vector = np.load(PATH + '/user_vector' + version + '.npy')
