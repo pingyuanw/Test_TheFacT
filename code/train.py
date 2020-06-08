@@ -17,7 +17,7 @@ if __name__ == "__main__":
     num_dim = 20
     max_depth = 6
     num_BPRpairs = 20
-    lr = args.learning_rate
+    lr = float(args.learning_rate)
     lambda_u = 1
     lambda_v = 1
     lambda_BPR = 100
