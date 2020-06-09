@@ -14,7 +14,7 @@ if __name__ == "__main__":
     parser.add_argument("--learning_rate", help="learning rate", default=0.05)
     
     args = parser.parse_args()  
-    num_dim = 20
+    num_dim = 200
     max_depth = 6
     num_BPRpairs = 20
     lr = float(args.learning_rate)
