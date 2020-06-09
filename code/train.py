@@ -42,8 +42,8 @@ if __name__ == "__main__":
     print "Maximum depth of the regression tree: ", max_depth  
     print "learning rate: ", lr  
 
-    item_vector = np.load(path + 'item_vector' + start + '.npy')
-    user_vector = np.load(path + 'user_vector' + start + '.npy')
+    item_vector = np.loadtxt(path + 'item_vector' + start + '.txt')
+    user_vector = np.loadtxt(path + 'user_vector' + start + '.txt')
     pred = np.dot(user_vector, item_vector.T)
 
     if len(start) == 0:
@@ -81,9 +81,9 @@ if __name__ == "__main__":
         if i%save_rate == 0:
             np.save(path + "item_tree", [item_tree])
             np.save(path + "user_tree", [user_tree])
-            np.save(path + "item_vector" + str(i), item_vector)
-            np.save(path + "user_vector" + str(i), user_vector)
-            
+            np.savetxt(path + "item_vector" + str(i) + ".txt", item_vector, fmt="%0.8f")
+            np.savetxt(path + "user_vector" + str(i) + ".txt", user_vector, fmt="%0.8f")
+
         pred = np.dot(user_vector, item_vector.T)
         error = LA.norm(pred_old - pred) ** 2
         print ">>>>>Error: ", error
