@@ -14,6 +14,7 @@ if __name__ == "__main__":
     parser.add_argument("--num_run", help="number of iterations for alternatively creating the trees", default=5)
     parser.add_argument("--save_rate", help="frequency to save model", default=5)
     
+    parser.add_argument("--num_dim", help="the number of latent dimension", default=20)
     parser.add_argument("--learning_rate", help="learning rate", default=0.05)
     parser.add_argument("--lambda_u", help="regularization parameter for user vectors", default=1)
     parser.add_argument("--lambda_v", help="regularization parameter for item vectors", default=1)
@@ -32,8 +33,8 @@ if __name__ == "__main__":
     num_iter_user = int(args.num_iter_user)
     num_iter_item = int(args.num_iter_item)
     lr = float(args.learning_rate)
+    num_dim = int(args.num_dim)
 
-    num_dim = 20
     max_depth = 6
     batch_size = 100
     random_seed = 0
