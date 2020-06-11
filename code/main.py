@@ -69,7 +69,6 @@ def ndcg_k(r, k):
     return dcg_k(r, k) / idcg
 
 def get_ndcg(prediction, rating_matrix, k):
-    print('Shape:')
     # print(prediction.shape)
     # print(rating_matrix.shape)
     while prediction.shape[0] > rating_matrix.shape[0]:
